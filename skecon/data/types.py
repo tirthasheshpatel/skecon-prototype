@@ -1,17 +1,22 @@
 import numpy as np
 import torch
 
+from skecon.utils import _preprocess_data
+
 __all__ = ["TimeSeries", "CrossSection", "Pool", "Panel"]
 
 
-class TimeSeries:
+class DataTypeMixin:
     ...
 
-class CrossSection:
+class TimeSeries(DataTypeMixin):
     ...
 
-class Pool:
+class CrossSection(DataTypeMixin):
     ...
 
-class Panel:
+class Pool(DataTypeMixin):
+    ...
+
+class Panel(DataTypeMixin):
     ...
