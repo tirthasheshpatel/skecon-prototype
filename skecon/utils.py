@@ -34,9 +34,9 @@ def _preprocess_data(data, dtype=None, device=None, shape=None,
     if make_sparse:
         raise NotImplementedError("Sparse Tensors API is not "
                                   "implemented yet!")
-    if torch.isnan(data) and allow_nan == False:
+    if torch.any(torch.isnan(data)) and allow_nan == False:
         raise ValueError("Found 'NaN' entries in the tensor!")
-    if torch.isinf(data) and allow_inf == False:
+    if torch.any(torch.isinf(data)) and allow_inf == False:
         raise ValueError("Found 'inf' or 'ninf' in the tensor!")
     if shape is not None:
         shape = torch.Size(shape)
