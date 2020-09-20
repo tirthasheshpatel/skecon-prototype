@@ -5,10 +5,10 @@ import torch
 from skecon.config import default_device, default_dtype
 
 @torch.no_grad()
-def _preprocess_data(data, dtype=None, device=None, shape=None,
-                     allow_sparse=False, make_sparse=False,
-                     allow_inf=False, allow_nan=False, copy=False,
-                     deepcopy=False, requires_grad=False):
+def astensor(data, dtype=None, device=None, shape=None,
+             allow_sparse=False, make_sparse=False,
+             allow_inf=True, allow_nan=True, copy=False,
+             deepcopy=False, requires_grad=False):
     if device is None: device = default_device
     if dtype  is None: dtype  = default_dtype
 
