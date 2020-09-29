@@ -119,20 +119,24 @@ class DataScaleMixin:
     ------
     ValueError : If the given transformer hasn't been implemented.
     """
-    def __init__(self, data, transformer, dtype=None,
-                 device=None, requires_grad=True):
-        if transformer is not None and transformer not in self.TRANSFORMERS:
+    def __new__(cls, data, transformer=None, dtype=None,
+                device=None, requires_grad=True):
+        if transformer is None:
+            transformer = cls.DEFAULT
+        if transformer is not None and transformer not in cls.TRANSFORMERS:
             raise ValueError(f"Transformer '{transformer}' for scale "
-                             f"'{self.__class__.__name__}' not found!")
+                             f"'{cls.__class__.__name__}' not found!")
 
-        self._data = astensor(data, dtype=dtype, device=device,
+        cls._data = astensor(data, dtype=dtype, device=device,
                               requires_grad=requires_grad)
-        self._transformer = transformer
-        self._dtype = self._data.dtype
-        self._device = self._data.device
-        self._requires_grad = requires_grad
+        cls._transformer = transformer
+        cls._dtype = cls._data.dtype
+        cls._device = cls._data.device
+        cls._requires_grad = requires_grad
 
-        self.fitted = False
+        cls.fitted = False
+
+        return cls
 
     @property
     def data(self):
@@ -307,6 +311,7 @@ class DataScaleMixin:
 class Ratio(DataScaleMixin):
     # Registered transformers
     TRANSFORMERS = {'z_score'}
+    DEFAULT = 'z_score'
 
     def _z_score_fit(self):
         if self.data.ndim == 0:
